@@ -66,6 +66,3 @@ http://localhost:3000
 Tive algumas dificuldades quando estava mandando as informações para o banco, pois nele tem alguns campos que são NOT NULL, então para resolver coloquei dados aleatórios para poder preencher
 
 ---
-
-## Link do repositório
-https://github.com/evellynNakamura/ProjetoSequelize.git
