@@ -1,0 +1,160 @@
+<div class="page-header">
+  <h1>✏️ Editando: {{user.name}}</h1>
+  <div class="header-actions">
+    <a href="/users/{{user.id}}" class="btn btn-info">👁️ Ver Detalhes</a>
+    <a href="/" class="btn btn-secondary">⬅️ Voltar para Lista</a>
+  </div>
+</div>
+
+<!-- Formulário de Edição do Usuário -->
+<div class="edit-container">
+  <section class="user-edit-section">
+    <h2>👤 Dados do Usuário</h2>
+
+    <form action="/users/update" method="POST" class="form">
+      <input type="hidden" name="id" value="{{user.id}}" />
+
+      <div class="form-group">
+        <label for="name">Nome Completo *</label>
+        <input 
+          type="text" 
+          id="name"
+          name="name" 
+          class="form-control"
+          placeholder="Digite o nome completo"
+          value="{{user.name}}"
+          required
+          minlength="2"
+          maxlength="100"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="occupation">Profissão</label>
+        <input 
+          type="text" 
+          id="occupation"
+          name="occupation" 
+          class="form-control"
+          placeholder="Digite a profissão"
+          value="{{user.occupation}}"
+          maxlength="150"
+        />
+      </div>
+
+      <div class="form-group">
+        <div class="form-checkbox">
+          <input 
+            type="checkbox" 
+            id="newsletter"
+            name="newsletter" 
+            {{#if user.newsletter}}checked{{/if}}
+          />
+          <label for="newsletter">📧 Receber newsletter</label>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">💾 Salvar Alterações</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Seção de Endereços -->
+  <section class="addresses-section">
+    <h2>🏠 Gerenciar Endereços</h2>
+
+    <!-- Formulário para Adicionar Novo Endereço -->
+    <div class="address-form-container">
+      <h3>➕ Adicionar Novo Endereço</h3>
+
+      <form action="/address/create" method="POST" class="address-form">
+        <input type="hidden" name="userId" value="{{user.id}}" />
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="street">Rua/Avenida *</label>
+            <input 
+              type="text" 
+              id="street"
+              name="street" 
+              class="form-control"
+              placeholder="Digite o nome da rua"
+              required
+              minlength="5"
+              maxlength="200"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="number">Número</label>
+            <input 
+              type="text" 
+              id="number"
+              name="number" 
+              class="form-control"
+              placeholder="Número"
+              maxlength="20"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="city">Cidade *</label>
+          <input 
+            type="text" 
+            id="city"
+            name="city" 
+            class="form-control"
+            placeholder="Digite a cidade"
+            required
+            minlength="2"
+            maxlength="100"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary">🏠 Adicionar Endereço</button>
+      </form>
+    </div>
+
+    <!-- Lista de Endereços Existentes -->
+    <div class="addresses-list-container">
+      <h3>📋 Endereços Cadastrados ({{user.addresses.length}})</h3>
+
+      {{#if user.addresses.length}}
+      <div class="addresses-list">
+        {{#each user.addresses}}
+        <div class="address-item">
+          <div class="address-info">
+            <strong>📍 {{this.street}}</strong>
+            {{#if this.number}}, nº {{this.number}}{{/if}}
+            <br>
+            <span class="city">🏘️ {{this.city}}</span>
+            <small class="address-meta">ID: #{{this.id}}</small>
+          </div>
+
+          <div class="address-actions">
+            <form action="/address/delete" method="POST" class="delete-form">
+              <input type="hidden" name="id" value="{{this.id}}" />
+              <input type="hidden" name="userId" value="{{../user.id}}" />
+              <button 
+                type="submit" 
+                class="btn btn-danger btn-sm"
+                onclick="return confirm('⚠️ Tem certeza que deseja excluir este endereço?')"
+              >
+                🗑️ Excluir
+              </button>
+            </form>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+      {{else}}
+      <div class="empty-addresses">
+        <p>📭 Nenhum endereço cadastrado ainda</p>
+        <p>Use o formulário acima para adicionar o primeiro endereço.</p>
+      </div>
+      {{/if}}
+    </div>
+  </section>
+</div>
